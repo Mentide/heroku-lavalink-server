@@ -1,1 +1,1 @@
-web: node lavalink.js
+launch: node lavalink.js
