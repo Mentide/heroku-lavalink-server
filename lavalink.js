@@ -1,6 +1,7 @@
-
+require('dotenv').config();
 const fs = require('fs')
-const http = require('http')
+const https = require('https')
+
 let application = fs.readFileSync('./application.yml', 'utf8')
 
 if (process.env.PORT) {
@@ -12,13 +13,13 @@ if (process.env.PASS) {
 }
 fs.writeFileSync('./application.yml', application)
 
-const download = function (url, dest, cb) { 
+const download = function (url, dest, cb) { //modified code from https://stackoverflow.com/a/22907134
     const file = fs.createWriteStream(dest);
-    http.get(url, function (response) {
+    https.get(url, function (response) {
         response.pipe(file);
-        console.log('Downloading Lavalink.jar')
+        console.log('Downloading Lavalink.jar...')
         file.on('finish', function () {
-            console.log('Downloaded Lavalink.jar')
+            console.log('Finished Downloading Lavalink.jar')
             file.close(cb);
         });
     }).on('error', function (err) {
@@ -51,5 +52,5 @@ function startLavalink() {
     });
 }
 
-const cdn = 'http://cdn.glitch.com/77b0e0bb-e744-442a-bbbd-03c3fe832534%2FLavalink.jar?v=1587249367105'
+const cdn = 'https://cdn.lavalink.ga/v3.3.2.1/Lavalink.jar'
 download(cdn, './Lavalink.jar', startLavalink)
